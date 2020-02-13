@@ -1,17 +1,31 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+    $_SESSION["player"] = $player = new Blackjack();
+    $_SESSION["dealer"] = $dealer = new Blackjack();
+} else {
+    $player = $_SESSION["player"];
+    $dealer = $_SESSION["dealer"];
+}
+
+
 $player = new Blackjack();
+$dealer = new Blackjack();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if ($_POST["test"] == 1) {
-        $player->hit();
+    if (isset($_POST["hit"])) {
+        $scoreStand = $player->hit();
     }
-    if ($_POST["test"] == 2) {
+    if (isset($_POST["stand"])) {
         $player->stand();
+        $scoreStandDeal = $dealer->hit();
     }
-    if ($_POST["test"] == 3) {
+    if (isset($_POST["surrender"])) {
         $player->surrender();
     }
 }
+
+
 
 
 ?>
@@ -26,10 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <form method="post">
-    <button type="submit" name="test" id="test" value="1">Hit me</button>
-    <button type="submit" name="test" id="test" value="2">Stand</button>
-    <button type="submit" name="test" id="test" value="3">Surrender</button>
+    <button type="submit" name="hit" id="test">Hit me</button>
+    <button type="submit" name="stand" id="test">Stand</button>
+    <button type="submit" name="surrender" id="test">Surrender</button>
 </form>
+<div id="scoreStand"><?php echo $scoreStand ?></div>
+<div id="scoreStandDeal"><?php echo $scoreStandDeal ?></div>
 </body>
 </html>
 

@@ -6,27 +6,52 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 class Blackjack {
-    public $score = 0;
+    public $score;
 
-    function hit(){
+    public function __construct(int $score) {
+        $this->score = $score;
+    }
+
+    public function hit(){
         $randNum = rand(1,11);
+        $this->score += $randNum;
+        echo $this->score;
+
 /*        $cards = [];
         array_push($cards, $randNum);
         $_SESSION["cards"] = $cards;
         var_dump($_SESSION["cards"]);*/
-        $this->score += $randNum;
-        if ($this->score > 21) {
+
+/*        if ($this->score > 21) {
             echo "<br>LOSER";
-        }
-        echo $this->score;
+        }*/
+
     }
 
-    function stand(){
-        echo "dealer's turn now";
+    public function getScore(): int {
+        return $this->score;
+    }
 
+    function stand(Blackjack $player, Blackjack $dealer){
+        $playTotal = $player->getScore();
+
+        do {
+            $dealer->hit();
+            $_SESSION["dealer"] = $dealer->getScore();
+        } while ($dealer->getScore() < 15);
+
+
+        if ($dealer->getScore() > 21) {
+            echo "dealer done";
+        } elseif ($dealer->getScore() >= $playTotal && $dealer->getScore() <= 21) {
+            echo "dealer wins";
+        } elseif ($dealer->getScore() < $playTotal) {
+            echo "you win, dealer loses";
+        }
     }
     function surrender(){
-        echo "you gave up";
+        die("you gave up");
+        session_destroy();
     }
 
 }

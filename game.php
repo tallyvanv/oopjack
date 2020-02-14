@@ -12,30 +12,39 @@ $player = "";
 $dealer = "";
 
 //simple session ting for dumb babies
-if (!isset($_SESSION["player"])) {
-    $player = new Blackjack();
-    $_SESSION["player"] = $player;
+if (isset($_SESSION["player"])) {
+    $player = new Blackjack($_SESSION["player"]);
+    // If there isn't, clear it and start anew with 2 'random cards'
 } else {
-    $player = $_SESSION["player"];
+    $_SESSION["player"] = 0;
+    $player = new Blackjack($_SESSION["player"]);
+    $_SESSION["player"] = $player->getScore();
+
 }
 
-if (!isset($_SESSION["dealer"])) {
-    $dealer = new Blackjack();
-    $_SESSION["dealer"] = $dealer;
+if (isset($_SESSION["dealer"])) {
+    $dealer = new Blackjack($_SESSION["dealer"]);
+    $dealerScore = $_SESSION["dealer"];
 } else {
-    $dealer = $_SESSION["dealer"];
+    $_SESSION["dealer"] = 0;
+    $dealer = new Blackjack($_SESSION["dealer"]);
 }
 
 /*$player = new Blackjack();
 $dealer = new Blackjack();*/
-
+//do functions when you push di buttons
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["hit"])) {
         $player->hit();
+        $_SESSION["player"] = $player->getScore();
+
+        if ($player->getScore() > 21) {
+            echo "<br/>LOSER";
+            session_destroy();
+        }
     }
     if (isset($_POST["stand"])) {
-        $player->stand();
-        $dealer->hit();
+        $player->stand($player, $dealer);
     }
     if (isset($_POST["surrender"])) {
         $player->surrender();

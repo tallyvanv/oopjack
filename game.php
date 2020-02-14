@@ -11,6 +11,7 @@ session_start();
 $player = "";
 $dealer = "";
 
+//simple session ting for dumb babies
 if (!isset($_SESSION["player"])) {
     $player = new Blackjack();
     $_SESSION["player"] = $player;

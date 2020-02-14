@@ -4,13 +4,24 @@ declare(strict_types=1);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+
 require "blackjack.php";
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-    $_SESSION["player"] = $player = new Blackjack();
-    $_SESSION["dealer"] = $dealer = new Blackjack();
+session_start();
+
+$player = "";
+$dealer = "";
+
+if (!isset($_SESSION["player"])) {
+    $player = new Blackjack();
+    $_SESSION["player"] = $player;
 } else {
     $player = $_SESSION["player"];
+}
+
+if (!isset($_SESSION["dealer"])) {
+    $dealer = new Blackjack();
+    $_SESSION["dealer"] = $dealer;
+} else {
     $dealer = $_SESSION["dealer"];
 }
 
@@ -46,8 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <button type="submit" name="stand" id="test">Stand</button>
     <button type="submit" name="surrender" id="test">Surrender</button>
 </form>
-<div id="scoreStand"><?php echo $scoreStand ?></div>
-<div id="scoreStandDeal"><?php echo $scoreStandDeal ?></div>
 </body>
 </html>
 

@@ -21,9 +21,6 @@ class Blackjack {
         echo $this->score;
     }
 
-    function getScore() {
-        return $_SESSION["score"];
-    }
     function stand(){
         echo "dealer's turn now";
 

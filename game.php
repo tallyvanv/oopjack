@@ -1,4 +1,10 @@
 <?php
+declare(strict_types=1);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+require "blackjack.php";
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
     $_SESSION["player"] = $player = new Blackjack();
@@ -8,25 +14,21 @@ if (session_status() == PHP_SESSION_NONE) {
     $dealer = $_SESSION["dealer"];
 }
 
-
-$player = new Blackjack();
-$dealer = new Blackjack();
+/*$player = new Blackjack();
+$dealer = new Blackjack();*/
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["hit"])) {
-        $scoreStand = $player->hit();
+        $player->hit();
     }
     if (isset($_POST["stand"])) {
         $player->stand();
-        $scoreStandDeal = $dealer->hit();
+        $dealer->hit();
     }
     if (isset($_POST["surrender"])) {
         $player->surrender();
     }
 }
-
-
-
 
 ?>
 <!doctype html>

@@ -1,5 +1,9 @@
 <?php
-session_start();
+declare(strict_types=1);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 class Blackjack {
     public $score = 0;
@@ -10,19 +14,18 @@ class Blackjack {
         array_push($cards, $randNum);
         $_SESSION["cards"] = $cards;
         var_dump($_SESSION["cards"]);*/
-        $this->score = $_SESSION["score"];
-        $_SESSION["score"] = $this->score += $randNum;
+        $this->score += $randNum;
         if ($this->score > 21) {
             echo "<br>LOSER";
         }
-        return $_SESSION["score"];
+        echo $this->score;
     }
 
     function getScore() {
         return $_SESSION["score"];
     }
-    function stand(Blackjack $player, Blackjack $dealer){
-        echo "your score was". $player->getScore(). "<br>";
+    function stand(){
+        echo "dealer's turn now";
 
     }
     function surrender(){
@@ -30,5 +33,3 @@ class Blackjack {
     }
 
 }
-
-require "game.php";
